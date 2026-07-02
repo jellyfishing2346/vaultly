@@ -70,3 +70,10 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER ledger_no_update BEFORE UPDATE OR DELETE ON ledger_entries
     FOR EACH ROW EXECUTE FUNCTION forbid_ledger_mutation();
+
+-- System account used to seed test/demo balances
+INSERT INTO users (email, handle, full_name, password_hash)
+VALUES ('system@vaultly.internal', 'vaultly_system', 'Vaultly System', 'not-a-login');
+
+INSERT INTO accounts (user_id, type, balance)
+SELECT id, 'system', 0 FROM users WHERE handle = 'vaultly_system';

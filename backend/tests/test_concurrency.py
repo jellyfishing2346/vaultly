@@ -19,7 +19,7 @@ import pytest
 
 from app.services.ledger import InsufficientFunds, execute_transfer, reconcile
 
-DB_DSN = "postgresql://vaultly:vaultly_dev@localhost:5432/vaultly"
+DB_DSN = "postgresql://vaultly:vaultly_dev@localhost:5433/vaultly"
 
 
 @pytest.fixture
