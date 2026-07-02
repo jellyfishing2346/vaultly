@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: vaultly
+      POSTGRES_PASSWORD: vaultly_dev
+      POSTGRES_DB: vaultly
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/migrations/001_ledger.sql:/docker-entrypoint-initdb.d/001_ledger.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vaultly"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
