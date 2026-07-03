@@ -1,0 +1,41 @@
+"""vaultly API entrypoint.
+
+Run:  uvicorn app.main:app --reload
+Docs: http://localhost:8000/docs
+"""
+
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from app.api import auth, me, transfers
+from app.core.deps import close_pools, create_pools
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_pools(app)
+    yield
+    await close_pools(app)
+
+
+app = FastAPI(title="vaultly", version="0.2.0", lifespan=lifespan)
+
+# Dev CORS for the Next.js frontend (Week 3). Tighten for production.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(auth.router)
+app.include_router(me.router)
+app.include_router(transfers.router)
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
