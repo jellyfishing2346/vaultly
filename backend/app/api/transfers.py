@@ -12,6 +12,7 @@ from fastapi import APIRouter, Header, HTTPException
 from app.core.config import settings
 from app.core.deps import DB, CurrentUser, Redis
 from app.models.schemas import ActivityItem, TransferRequest, TransferResponse
+from app.services.fraud import FraudEngine
 from app.services.ledger import InsufficientFunds, execute_transfer
 
 router = APIRouter(prefix="/transfers", tags=["transfers"])
@@ -42,7 +43,7 @@ async def create_transfer(
             "SELECT id FROM accounts WHERE user_id = $1 AND type = 'wallet'", user_id
         )
         recipient = await conn.fetchrow(
-            """SELECT a.id FROM accounts a
+            """SELECT a.id, u.id as user_id FROM accounts a
                JOIN users u ON u.id = a.user_id
                WHERE u.handle = $1 AND a.type = 'wallet'""",
             body.to_handle,
@@ -51,6 +52,41 @@ async def create_transfer(
         raise HTTPException(404, f"No user with handle @{body.to_handle}")
     if recipient["id"] == from_account:
         raise HTTPException(400, "You can't send money to yourself")
+
+    # Fraud scoring
+    fraud_engine = FraudEngine(db)
+    fraud_score = await fraud_engine.score_transfer(
+        from_user_id=user_id,
+        to_user_id=recipient["user_id"],
+        amount_cents=body.amount,
+        note=body.note,
+    )
+    
+    # If high fraud score, hold for review
+    if fraud_score.should_hold:
+        # Create a pending transfer instead of executing immediately
+        async with db.acquire() as conn:
+            transfer_id = await conn.fetchval(
+                """
+                INSERT INTO transfers (idempotency_key, from_account, to_account, amount, note, status, fraud_score)
+                VALUES ($1, $2, $3, $4, $5, 'pending_review', $6)
+                RETURNING id
+                """,
+                f"{user_id}:{idempotency_key}",
+                from_account,
+                recipient["id"],
+                body.amount,
+                body.note,
+                fraud_score.score,
+            )
+        
+        return TransferResponse(
+            id=transfer_id,
+            status="pending_review",
+            amount=body.amount,
+            note=body.note,
+            replayed=False,
+        )
 
     try:
         result = await execute_transfer(
