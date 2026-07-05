@@ -100,7 +100,11 @@ class ApiClient {
 
   // User
   async getMe(): Promise<{ user: User; account: Account }> {
-    return this.request('/me');
+    const [user, account] = await Promise.all([
+      this.request<User>('/me'),
+      this.request<Account>('/me/account'),
+    ]);
+    return { user, account };
   }
 
   // Transfers

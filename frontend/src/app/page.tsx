@@ -19,9 +19,12 @@ export default function Home() {
   }, [isAuthenticated, isLoading, router]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <h1 className="text-4xl font-bold mb-4">Vaultly</h1>
-      <p className="text-lg text-gray-600">Loading...</p>
+    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-gradient-to-br from-indigo-600 via-blue-600 to-blue-500">
+      <div className="h-16 w-16 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-bold text-white mb-4">
+        V
+      </div>
+      <h1 className="text-4xl font-bold mb-2 text-white">Vaultly</h1>
+      <p className="text-lg text-blue-100">Loading...</p>
     </main>
   );
 }

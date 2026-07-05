@@ -44,24 +44,27 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your Vaultly account
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-blue-600 to-blue-500 px-4 py-12">
+      <div className="max-w-md w-full space-y-6 bg-white rounded-2xl shadow-xl p-8">
+        <div className="flex flex-col items-center">
+          <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-500 flex items-center justify-center text-2xl font-bold text-white mb-4">
+            V
+          </div>
+          <h2 className="text-center text-2xl font-extrabold text-gray-900">
+            Create your account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Start sending money securely with double-entry protection
+          <p className="mt-1 text-center text-sm text-gray-500">
+            Start sending money securely, in seconds
           </p>
         </div>
-        
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+
+        <form className="space-y-5" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+            <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
-          
+
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -73,7 +76,7 @@ export default function SignupPage() {
                 type="email"
                 autoComplete="email"
                 required
-                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -90,7 +93,7 @@ export default function SignupPage() {
                 type="text"
                 required
                 pattern="[a-z0-9_]{3,30}"
-                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="username"
                 value={handle}
                 onChange={(e) => setHandle(e.target.value.toLowerCase())}
@@ -109,7 +112,7 @@ export default function SignupPage() {
                 name="fullName"
                 type="text"
                 required
-                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="John Doe"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
@@ -127,7 +130,7 @@ export default function SignupPage() {
                 autoComplete="new-password"
                 required
                 minLength={8}
-                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -145,7 +148,7 @@ export default function SignupPage() {
                 autoComplete="new-password"
                 required
                 minLength={8}
-                className="mt-1 appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                className="mt-1 block w-full px-4 py-3 border border-gray-200 bg-gray-50 rounded-xl placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
@@ -157,14 +160,14 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-semibold rounded-xl text-white bg-gradient-to-r from-indigo-600 to-blue-500 hover:from-indigo-700 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed shadow-md transition"
             >
               {isLoading ? 'Creating account...' : 'Create account'}
             </button>
           </div>
 
           <div className="text-center">
-            <Link href="/login" className="text-blue-600 hover:text-blue-500">
+            <Link href="/login" className="text-indigo-600 hover:text-indigo-500 font-medium">
               Already have an account? Sign in
             </Link>
           </div>
