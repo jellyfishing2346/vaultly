@@ -130,8 +130,8 @@ class FraudEngine:
             )
             if not row:
                 return False
-            from datetime import datetime, timedelta
-            return row["created_at"] > datetime.now() - timedelta(days=7)
+            from datetime import datetime, timedelta, timezone
+            return row["created_at"] > datetime.now(timezone.utc) - timedelta(days=7)
 
 
 # Fallback simple scorer for when DB isn't available
