@@ -30,7 +30,7 @@ Vaultly is a peer-to-peer payment system that prioritizes **financial correctnes
 ```
 ┌─────────────────┐         ┌─────────────────┐
 │   Next.js App   │◄────────┤    FastAPI      │
-│  (Frontend)     │  REST+WS │   (Backend)     │
+│  (Frontend)     │ REST+WS │   (Backend)     │
 └─────────────────┘         └────────┬────────┘
                                      │
                     ┌────────────────┼────────────────┐
