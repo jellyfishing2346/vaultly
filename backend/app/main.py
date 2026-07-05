@@ -22,10 +22,14 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="vaultly", version="0.2.0", lifespan=lifespan)
 
-# Dev CORS for the Next.js frontend (Week 3). Tighten for production.
+import os
+
+_default_origins = "http://localhost:3000"
+allow_origins = os.getenv("CORS_ORIGINS", _default_origins).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=allow_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
